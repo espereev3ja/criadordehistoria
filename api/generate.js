@@ -23,7 +23,7 @@ Escreva uma história completa e envolvente.
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Authorization": "Bearer SUA_API_KEY_AQUI",
+        "Authorization": "Bearer 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",
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
