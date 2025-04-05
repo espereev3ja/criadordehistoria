@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Gerador de Histórias</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: auto; }
+    textarea, input, select, button { width: 100%; margin-bottom: 10px; padding: 10px; }
+    #resultado { white-space: pre-line; background: #f9f9f9; padding: 10px; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <h2>✨ Gerador de Histórias Estilo Webnovel</h2>
+
+  <select id="genero">
+    <option>Omegaverso</option>
+    <option>Romance Histórico</option>
+    <option>Aliens</option>
+    <option>Dark Romance</option>
+    <option>Orcs</option>
+    <option>Mocinha Plus Size</option>
+    <option>Monstros</option>
+    <option>Máfia</option>
+    <option>Distopia</option>
+    <option>Fantasia Erótica</option>
+  </select>
+
+  <select id="estilo">
+    <option>Narrativa envolvente</option>
+    <option>Descrição gráfica</option>
+    <option>Tons sensuais</option>
+    <option>Detalhista</option>
+    <option>Fantasia emocional</option>
+  </select>
+
+  <input id="personagem1" placeholder="Nome da Protagonista" />
+  <input id="personagem2" placeholder="Interesse Amoroso" />
+  <textarea id="referencia" placeholder="Ideia ou link de inspiração..."></textarea>
+
+  <button onclick="gerar()">✨ Gerar História</button>
+  <div id="resultado"></div>
+  <button onclick="baixar()">📥 Salvar como .txt</button>
+
+  <script>
+    async function gerar() {
+      const dados = {
+        genero: document.getElementById("genero").value,
+        estilo: document.getElementById("estilo").value,
+        personagem1: document.getElementById("personagem1").value,
+        personagem2: document.getElementById("personagem2").value,
+        referencia: document.getElementById("referencia").value,
+      };
+
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dados)
+      });
+
+      const json = await res.json();
+      document.getElementById("resultado").textContent = json.historia || "Erro.";
+    }
+
+    function baixar() {
+      const texto = document.getElementById("resultado").textContent;
+      const blob = new Blob([texto], { type: "text/plain;charset=utf-8" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "historia.txt";
+      link.click();
+    }
+  </script>
+</body>
+</html>
